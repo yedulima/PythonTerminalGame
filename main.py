@@ -53,14 +53,14 @@ actual_scenary = outside
 
 class gameFunctions:
     def __init__(self):
-        self.SPECIAL_CHARACTERS = ["#", "✮"]
+        self.SPECIAL_CHARACTERS = ["#", "✮", "~"]
         self.SCENARIES = { # Y and X
             (5, 1): outside,
             (3, 5): scenary_house,
             (1, 5): scenary_cavern,
             (5, 5): scenary_house,
-            "Forest": {
-                "outside": (((0, 1), (0, 2), (0, 3)), outside2)
+            "Forest": { # Actual scenary / Positions can teleport / Next scenary
+                outside: (((0, 1), (0, 2), (0, 3)), outside2)
             }    
         }
 
@@ -133,7 +133,7 @@ class gameFunctions:
             if actual_scenary[newLine][newColumn] == "#":
                 self.scenaryChange(self.SCENARIES[(newLine, newColumn)])
             elif actual_scenary[newLine][newColumn] == "~":
-                self.scenaryChange(self.SCENARIES[()])
+                self.scenaryChangeForest(actual_scenary, actual_scenary[newLine][newColumn])
             elif actual_scenary[newLine][newColumn] == "✮":
                 self.pickStar()
                 if not self.playerStats["STAMINA"]:
