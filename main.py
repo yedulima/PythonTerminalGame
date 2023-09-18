@@ -16,13 +16,24 @@ outside = [
 
 # 5x5 SCENARY (FOREST)
 outside2 = [
-    ['-', '~', '~', '~', '~', '-', '-'],
+    ['-', '~', '~', '~', '~', '~', '-'],
     ['|', ' ', '∆', ' ', ' ', ' ', '|'],
     ['|', ' ', 'π', ' ', ' ', '∆', '|'],
     ['|', ' ', ' ', ' ', ' ', 'π', '|'],
     ['|', ' ', ' ', ' ', ' ', ' ', '|'],
-    ['|', ' ', ' ', 'O', ' ', ' ', '|'],
+    ['|', ' ', 'O', ' ', ' ', ' ', '|'],
     ['-', '~', '~', '~', '-', '-', '-']
+]
+
+# 5x5 SCENARY (FOREST)
+outside3 = [
+    ['-', '-', '-', '-', '-', '-', '-'],
+    ['|', ' ', ' ', ' ', ' ', ' ', '|'],
+    ['|', '∆', ' ', ' ', ' ', ' ', '|'],
+    ['|', 'π', ' ', ' ', ' ', ' ', '|'],
+    ['|', ' ', ' ', ' ', '∆', ' ', '|'],
+    ['|', ' ', 'O', ' ', 'π', ' ', '|'],
+    ['-', '~', '~', '~', '~', '~', '-']
 ]
 
 # 5x5 SCENARY (HOUSE)
@@ -60,7 +71,10 @@ class gameFunctions:
             (1, 5): scenary_cavern,
             (5, 5): scenary_house,
             "Forest": { # Positions can teleport (Y & X): actualScenary / nextScenary
-                ((0, 0), (1, 3)): (outside, outside2)
+                ((0, 0), (1, 3)): (outside, outside2),
+                ((6, 6), (1, 3)): (outside2, outside),
+                ((0, 0), (1, 5)): (outside2, outside3),
+                ((6, 6), (1, 5)): (outside3, outside2)
             }    
         }
 
@@ -109,7 +123,9 @@ class gameFunctions:
         y, x = nextPosition
         for position in self.SCENARIES["Forest"].keys():
             yDeli, xDeli = position
-            
+            if (y >= yDeli[0] and y <= yDeli[1]) and (x >= xDeli[0] and x <= xDeli[1]) and (actual_scenary == self.SCENARIES["Forest"][position][0]):
+                self.scenaryChange(self.SCENARIES["Forest"][position][1])
+                return   
     
     def pickStar(self) -> None:
         self.playerStats['STARS'] += 1
