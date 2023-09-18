@@ -59,8 +59,8 @@ class gameFunctions:
             (3, 5): scenary_house,
             (1, 5): scenary_cavern,
             (5, 5): scenary_house,
-            "Forest": { # Actual scenary / Positions can teleport / Next scenary
-                outside: (((0, 1), (0, 2), (0, 3)), outside2)
+            "Forest": { # Positions can teleport (Y & X): actualScenary / nextScenary
+                ((0, 0), (1, 3)): (outside, outside2)
             }    
         }
 
@@ -101,14 +101,15 @@ class gameFunctions:
         for line in actual_scenary:
             print(' '.join(line))
 
-    def scenaryChangeForest(self, scenary: str, actualPosition: tuple) -> None:
-        for positions in self.SCENARIES["Forest"][scenary][0]:
-            if positions == actualPosition:
-                self.scenaryChange(self.SCENARIES["Forest"][scenary][1])
-
     def scenaryChange(self, newScenary) -> None:
         global actual_scenary
         actual_scenary = newScenary
+        
+    def scenaryChangeForest(self, nextPosition: tuple) -> None:
+        y, x = nextPosition
+        for position in self.SCENARIES["Forest"].keys():
+            yDeli, xDeli = position
+            
     
     def pickStar(self) -> None:
         self.playerStats['STARS'] += 1
@@ -133,7 +134,7 @@ class gameFunctions:
             if actual_scenary[newLine][newColumn] == "#":
                 self.scenaryChange(self.SCENARIES[(newLine, newColumn)])
             elif actual_scenary[newLine][newColumn] == "~":
-                self.scenaryChangeForest(actual_scenary, actual_scenary[newLine][newColumn])
+                self.scenaryChangeForest((newLine, newColumn))
             elif actual_scenary[newLine][newColumn] == "✮":
                 self.pickStar()
                 if not self.playerStats["STAMINA"]:
